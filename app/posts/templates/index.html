@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+    <body>
+        <h2><a href="{% url 'index' %}">Home</a></h2>
+        <h2>Post form</h2>
+        <form action="{% url 'index' %}" method="POST">
+            <label for="">title</label>
+            <input type="text" name="title">
+            <hr>
+            <label for="">body</label>
+            <input type="text" name="body">
+            {% csrf_token %}
+            <button type="submit">Post</button>
+        </form>
+        <hr>
+        {% for p in posts %}
+            <p>title : {{ p.title }}</p>
+            <p>body : {{ p.body }}</p>
+            <div class="mb-1 text-muted">created_at : {{ p.created_at }}</div>
+            <hr>
+        {% endfor %}
+    </body>
+</html>
