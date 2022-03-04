@@ -1,0 +1,39 @@
+# docker-compose exec web python manage.py migrate --no-input
+version: '3.7'
+
+services:
+  web:
+    build: ./app
+    command: gunicorn dj_renew.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./app/:/usr/src/app/
+    expose:
+      - 8000
+    environment:
+      - CLOUD_SQL=1
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+  db:
+    image: gcr.io/cloudsql-docker/gce-proxy:1.16
+    command:
+      [
+        "/cloud_sql_proxy",
+        "-instances=YOUR_CLOUD_SQL_INSTANCE_NAME=tcp:0.0.0.0:5432",
+        "-credential_file=/config/cloud_sql.json"
+      ]
+    volumes:
+      - ./cloud_sql.json:/config/cloud_sql.json
+    environment:
+      - POSTGRES_USER=struccle
+      - POSTGRES_PASSWORD=struccle
+      - POSTGRES_DB=struccle_db
+    ports:
+      - "5432:5432"
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - web
