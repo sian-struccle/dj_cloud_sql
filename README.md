@@ -43,4 +43,4 @@ http://localhost/
 
 ## cloud SQLの適用
 こちらの動画をご参照ください。
-https://youtu.be/KUp35Tq0-94(https://youtu.be/KUp35Tq0-94)
+https://youtu.be/KUp35Tq0-94
